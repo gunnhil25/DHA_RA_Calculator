@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADF/DHA Rent Allowance (RA) Calculator</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --accent: #10b981;
+      --border: #334155;
+      --highlight: #0369a1;
+      --input-bg: #0b1120;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .settings-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .results {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.95rem;
+      border-bottom: 1px dashed rgba(51, 65, 85, 0.5);
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .card-highlight {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+
+    .highlight-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .highlight-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .highlight-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .highlight-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .highlight-split {
+      color: var(--accent);
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>ADF / DHA Rent Allowance</h1>
+    <p class="subtitle">Aircraftman • Customisable Ceilings</p>
+
+    <!-- Property & Tenancy Inputs -->
+    <div class="input-group">
+      <label for="weeklyRent">Weekly Property Rent ($)</label>
+      <input type="number" id="weeklyRent" placeholder="e.g. 550" min="0" step="10" value="550">
+    </div>
+
+    <div class="input-group">
+      <label for="bedrooms">Bedrooms</label>
+      <select id="bedrooms">
+        <option value="2">2 Bedrooms</option>
+        <option value="3" selected>3 Bedrooms</option>
+      </select>
+    </div>
+
+    <!-- Editable Ceiling Rates -->
+    <div class="settings-box">
+      <div class="section-title">
+        <span>⚙️ Fortnightly Rent Ceilings ($)</span>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label for="ceiling2BR">2 Bedroom Ceiling</label>
+          <input type="number" id="ceiling2BR" min="0" step="1" value="1066.00">
+        </div>
+        <div>
+          <label for="ceiling3BR">3 Bedroom Ceiling</label>
+          <input type="number" id="ceiling3BR" min="0" step="1" value="1184.00">
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation Outputs -->
+    <div class="results">
+      <div class="stat-row">
+        <span class="stat-label">Fortnightly Rent</span>
+        <span class="stat-value" id="valFortnightlyRent">$0.00</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Active DHA Ceiling (FN)</span>
+        <span class="stat-value" id="valCeiling">$0.00</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Member Contribution (FN)</span>
+        <span class="stat-value" id="valContribution">$0.00</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Allowance Payable by DHA (FN)</span>
+        <span class="stat-value" id="valAllowance" style="color: var(--accent);">$0.00</span>
+      </div>
+
+      <div class="card-highlight">
+        <div class="highlight-row">
+          <span class="highlight-label">Out-of-Pocket Cost:</span>
+          <span class="highlight-value" id="valOutWeekly">$0.00 / wk</span>
+        </div>
+        <div class="highlight-row">
+          <span class="highlight-label">Split Cost (Per Person):</span>
+          <span class="highlight-value highlight-split" id="valSplitWeekly">$0.00 / wk</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">Client-side calculator • Updates instantly on input change</p>
+  </div>
+
+  <script>
+    // Member contributions for Aircraftman (preserved from source)
+    const CONTRIBUTIONS = {
+      2: 582.84,
+      3: 647.60
+    };
+
+    const rentInput = document.getElementById("weeklyRent");
+    const bedroomSelect = document.getElementById("bedrooms");
+    const ceiling2BRInput = document.getElementById("ceiling2BR");
+    const ceiling3BRInput = document.getElementById("ceiling3BR");
+
+    function formatCurrency(val) {
+      return "$" + val.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculate() {
+      const weeklyRent = parseFloat(rentInput.value) || 0;
+      const bedrooms = parseInt(bedroomSelect.value, 10);
+
+      // Read current dynamic ceilings from input fields
+      const ceiling2BR = parseFloat(ceiling2BRInput.value) || 0;
+      const ceiling3BR = parseFloat(ceiling3BRInput.value) || 0;
+
+      const activeCeiling = bedrooms === 2 ? ceiling2BR : ceiling3BR;
+      const contribution = CONTRIBUTIONS[bedrooms];
+
+      const fortnightlyRent = weeklyRent * 2;
+      const applicableRent = Math.min(fortnightlyRent, activeCeiling);
+      const allowanceFn = Math.max(0.0, applicableRent - contribution);
+
+      const outOfPocketFn = fortnightlyRent - allowanceFn;
+      const outOfPocketWeekly = outOfPocketFn / 2;
+      const perPersonWeekly = outOfPocketWeekly / 2;
+
+      document.getElementById("valFortnightlyRent").textContent = formatCurrency(fortnightlyRent);
+      document.getElementById("valCeiling").textContent = formatCurrency(activeCeiling);
+      document.getElementById("valContribution").textContent = formatCurrency(contribution);
+      document.getElementById("valAllowance").textContent = formatCurrency(allowanceFn);
+      document.getElementById("valOutWeekly").textContent = formatCurrency(outOfPocketWeekly) + " / wk";
+      document.getElementById("valSplitWeekly").textContent = formatCurrency(perPersonWeekly) + " / wk";
+    }
+
+    // Attach real-time listeners to all input elements
+    rentInput.addEventListener("input", calculate);
+    bedroomSelect.addEventListener("change", calculate);
+    ceiling2BRInput.addEventListener("input", calculate);
+    ceiling3BRInput.addEventListener("input", calculate);
+
+    // Initial calculation on page load
+    calculate();
+  </script>
+</body>
+</html>
